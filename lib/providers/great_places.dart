@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:greate_places_app/models/place.dart';
+import 'package:great_places_app/models/place.dart';
 
 class GreatPlaces with ChangeNotifier {
   List<Place> _items = [];
