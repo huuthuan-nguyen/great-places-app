@@ -19,7 +19,7 @@ class _ImageInpuState extends State<ImageInput> {
     final picker = ImagePicker();
     final imageFile = await picker.pickImage(
       source: ImageSource.camera,
-      maxWidth: 600,
+      maxWidth: 100,
     );
     if (imageFile == null) {
       return;
@@ -59,11 +59,13 @@ class _ImageInpuState extends State<ImageInput> {
           width: 10,
         ),
         Expanded(
-          child: FlatButton.icon(
+          child: TextButton.icon(
+            onPressed: _takePicture,
             icon: const Icon(Icons.camera),
             label: const Text('Take Picture'),
-            textColor: Theme.of(context).primaryColor,
-            onPressed: _takePicture,
+            style: TextButton.styleFrom(
+              foregroundColor: Theme.of(context).primaryColor,
+            ),
           ),
         ),
       ],
