@@ -10,10 +10,10 @@ class AddPlaceScreen extends StatefulWidget {
   static const routeName = '/add-place';
 
   @override
-  _AddPlaceScreenState createState() => _AddPlaceScreenState();
+  AddPlaceScreenState createState() => AddPlaceScreenState();
 }
 
-class _AddPlaceScreenState extends State<AddPlaceScreen> {
+class AddPlaceScreenState extends State<AddPlaceScreen> {
   final _titleController = TextEditingController();
   File? _pickedImage;
 

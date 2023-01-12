@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:great_places_app/providers/great_places.dart';
 import 'package:great_places_app/screens/places_list_screen.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -16,8 +16,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Great Places',
         theme: ThemeData(
-          primarySwatch: Colors.indigo,
-          accentColor: Colors.amber,
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.indigo)
+              .copyWith(secondary: Colors.amber),
         ),
         home: const PlacesListScreen(),
         routes: {
