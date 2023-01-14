@@ -11,6 +11,7 @@ if (flutterRoot == null) {
     throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
 }
 
+
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
     flutterVersionCode = '1'
@@ -19,6 +20,11 @@ if (flutterVersionCode == null) {
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
     flutterVersionName = '1.0'
+}
+
+def googleAPIKey = localProperties.getProperty('google.apiKey')
+if (googleAPIKey == null) {
+    throw new GradleException("Google API Key not found. Define location with google.apiKey in the local.properties file.")
 }
 
 apply plugin: 'com.android.application'
@@ -47,10 +53,11 @@ android {
         applicationId "com.example.greate_places_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        manifestPlaceholders.googleAPIKey = googleAPIKey
     }
 
     buildTypes {

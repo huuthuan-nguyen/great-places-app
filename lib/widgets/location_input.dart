@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
+import 'package:great_places_app/helpers/location_helper.dart';
+import 'package:great_places_app/screens/map_screen.dart';
 
 class LocationInput extends StatefulWidget {
-  const LocationInput({Key? key}) : super(key: key);
+  const LocationInput(this.onSelectPlace, {super.key});
+
+  final void Function(double, double) onSelectPlace;
 
   @override
   State<LocationInput> createState() => _LocationInputState();
@@ -10,6 +15,16 @@ class LocationInput extends StatefulWidget {
 
 class _LocationInputState extends State<LocationInput> {
   String? _previewImageUrl;
+
+  void _showPreview(double lat, lng) {
+    final staticMapImageURL = LocationHelper.generateLocationPreviewImage(
+      latitude: lat,
+      longitude: lng,
+    );
+    setState(() {
+      _previewImageUrl = staticMapImageURL;
+    });
+  }
 
   Future<void> _getCurrentUserLocation() async {
     Location location = Location();
@@ -33,9 +48,29 @@ class _LocationInputState extends State<LocationInput> {
         return;
       }
     }
+    try {
+      locationData = await location.getLocation();
+      _showPreview(locationData.latitude!, locationData.longitude!);
+      widget.onSelectPlace(locationData.latitude!, locationData.longitude!);
+    } catch (error) {
+      return;
+    }
+  }
 
-    locationData = await location.getLocation();
-    print(locationData);
+  Future<void> _selectOnMap() async {
+    final selectedLocation = await Navigator.of(context).push<LatLng>(
+      MaterialPageRoute(
+        fullscreenDialog: true,
+        builder: (ctx) => const MapScreen(
+          isSelecting: true,
+        ),
+      ),
+    );
+    if (selectedLocation == null) {
+      return;
+    }
+    _showPreview(selectedLocation.latitude, selectedLocation.longitude);
+    widget.onSelectPlace(selectedLocation.latitude, selectedLocation.longitude);
   }
 
   @override
@@ -72,7 +107,7 @@ class _LocationInputState extends State<LocationInput> {
               ),
             ),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: _selectOnMap,
               icon: const Icon(Icons.map),
               label: const Text('Select on Map'),
               style: TextButton.styleFrom(
